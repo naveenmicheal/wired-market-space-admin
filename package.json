@@ -1,0 +1,20 @@
+{
+  "name": "wired_market_admin",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.12.0",
+    "browser-image-compression": "^1.0.12",
+    "nuxt": "^2.14.0",
+    "vuex-persist": "^2.2.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/vuetify": "^1.11.2"
+  }
+}
