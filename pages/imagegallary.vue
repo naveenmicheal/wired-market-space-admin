@@ -36,8 +36,8 @@
 				<v-btn icon>
 					<v-icon color="blue">mdi-fullscreen</v-icon>
 				</v-btn>
-				<v-btn @click="removeimage(image._id)" icon><v-icon color="red">mdi-delete</v-icon>
-				</v-btn>	
+				<v-btn @click="removeprompt(image._id)" icon><v-icon color="red">mdi-delete</v-icon>
+				</v-btn>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -50,18 +50,38 @@
 	<v-dialog v-model="dialog" hide-overlay persistent width="500">
 		<v-card dark>
 			<v-card-text class="pa-6">
-				Uploading a Image ...
+				{{dialogtext}}
 				<v-progress-linear indeterminate color="white" class="mb-0 pa-1"></v-progress-linear>
 			</v-card-text>
 		</v-card>
 	</v-dialog>
 
-	<v-dialog hide-overlay persistent width="500"  v-model="alert" >
-		<v-alert type="success"  prominent border="left" dismissible
-		elevation="10" transition="scale-transition"	>
-		Image Upload Success <strong></strong> 
-	</v-alert>
-</v-dialog>
+	<v-dialog v-model="prompt"  max-width="400">
+		<v-card>
+			<v-card-title color="red">Are you sure want to remove?</v-card-title>
+			<v-card-actions>
+				<v-spacer></v-spacer>
+				<v-btn text tile @click="removeimage(productid)">Yes</v-btn>
+				<v-btn text tile @click="prompt = !prompt">No</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>	
+
+	  <v-snackbar v-model="alert" multi-line top :timeout="timeout">
+    	{{alerttext}}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="pink"  text v-bind="attrs" @click="alert = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+
+<!-- 	<v-alert type="success" v-model="alert"  prominent border="left" dismissible
+	elevation="10" transition="scale-transition">
+	{{alerttext}}
+	</v-alert> -->
+
 </div>
 </template>
 
@@ -82,7 +102,16 @@
 				overlay:false,
 				dialog:false,
 				alert:false,
+				prompt:false,
+				productid:"",
 				allimages:[],
+				alerttext:"",
+				timeout:3000,
+				notifytext:["Image Upload Success","Image Deleted"],
+				dialogtext:"",
+				dialogs:["Uploading a Image ...",
+				"removing a image",
+				],
 			}
 		},
 		computed: {
@@ -90,7 +119,7 @@
 		methods:{
 			previewimage:function () {
 				console.log(this.file)
-				this.overlay = true
+				this.overlay = !this.overlay
 
 				imageCompression(this.file, { 
 					maxSizeMB: 0.5,         
@@ -116,8 +145,9 @@
 
 			},
 			uploadimage: async function(){
-				this.dialog = true
-				// let imagedata = localStorage.getItem("image")
+				this.dialogtext = this.dialogs[0]
+				this.dialog = !this.dialog
+				
 				let token = document.cookie.split(";")[0].split("=")[1]
 				this.$axios.setHeader('Authorization', 'Bearer '+token)
 				let data = await this.$axios.$post("https://wiredapi.herokuapp.com/images/addimage",{
@@ -127,15 +157,30 @@
 				console.log(data)
 				if(data["status"] === "success"){
 					this.dialog = false
+					this.alerttext = this.notifytext[0]
+					this.alert = false
 					this.alert = true
+					this.file = null
 				}
 			},
+			removeprompt: function(e){
+				this.prompt = !this.prompt
+				this.productid = e
+			},
 			removeimage: async function(id){
+				this.prompt = !this.prompt
+				this.dialogtext = this.dialogs[1]
+				this.dialog = !this.dialog
 				let token = document.cookie.split(";")[0].split("=")[1]
 				this.$axios.setHeader('Authorization', 'Bearer '+token)
 				let status = await this.$axios.$delete("https://wiredapi.herokuapp.com/images/delete/"+id)
 				if(status["status"] === "success"){
+					this.dialog = !this.dialog
 					console.log('done')
+					this.alerttext = this.notifytext[1]
+					this.alert = !this.alert
+					this.productid = ""
+
 				}
 				else{
 					console.log(status)

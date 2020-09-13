@@ -19,6 +19,19 @@
 					</v-col>
 					<v-col cols=4>
 						<v-text-field background-color="blue lighten-5" type="number" prepend-icon="mdi-sack-percent" v-model="stock" solo label="Stock Count"></v-text-field>
+
+						<!-- Image Gallary -->
+						<v-dialog v-model="dialog" hide-overlay persistent width="500">
+							<v-card dark>
+								<v-card-text class="pa-6">
+									Choose Images
+									<v-progress-linear indeterminate color="white" class="mb-0 pa-1"></v-progress-linear>
+								</v-card-text>
+							</v-card>
+						</v-dialog>
+					</v-col>
+					<v-col cols=4>
+						<v-btn outlined tile @click="simages=!simages">Select Images</v-btn>
 					</v-col>
 				</v-row>
 				<v-row>
@@ -28,24 +41,47 @@
 				</v-row>
 			</v-form>
 			<!-- DIALOGS -->
-			<v-dialog v-model="dialog" hide-overlay persistent width="500">
-				<v-card dark>
-					<v-card-text class="pa-6">
-						Adding a Product ...
-						<v-progress-linear indeterminate color="white" class="mb-0 pa-1"></v-progress-linear>
-					</v-card-text>
+			<v-dialog v-model="simages" hide-overlay persistent width="700">
+				<v-card>
+					<v-card-title>Select your Images</v-card-title>
+					<v-container>
+						<v-row wrap>
+							<v-col>
+								<v-img
+								height="200"
+								width="200"
+								src="https://cdn.vuetifyjs.com/images/cards/store.jpg"
+								></v-img>
+								<v-checkbox label="Select Image" v-model="selectedimg" value="tt"></v-checkbox>
+							</v-col>
+
+							<v-col>
+								<v-img
+								height="200"
+								width="200"
+								src="https://cdn.vuetifyjs.com/images/cards/store.jpg"
+								></v-img>
+								<v-checkbox label="Select Image" v-model="selectedimg" value="tg"></v-checkbox>
+							</v-col>
+						</v-row>
+					</v-container>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn text tile>Done</v-btn>
+						<v-btn text tile @click="simages = !simages">Discord</v-btn>
+					</v-card-actions>
 				</v-card>
 			</v-dialog>
 			<v-dialog hide-overlay persistent width="500"  v-model="error" >
-			<v-alert type="error"  prominent border="left" dismissible
-			elevation="10" transition="scale-transition"	>
+				<v-alert type="error"  prominent border="left" dismissible
+				elevation="10" transition="scale-transition"	>
 				Product Creation Failed, <strong>Product Name can't be duplicated and all fields are required</strong> 
 			</v-alert>
 		</v-dialog>
 
 
-		</v-container>
-	</div>
+	</v-container>
+</div>
 </template>
 
 <script type="text/javascript">
@@ -60,9 +96,10 @@
 				tax:'',
 				desc:'',
 				stock:'',
-
+				simages:true,
 				dialog:false,
-				error:false
+				error:false,
+				selectedimg:[]
 			}
 		},
 		methods:{
