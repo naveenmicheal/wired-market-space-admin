@@ -15,7 +15,7 @@
 				</v-row>
 				<v-row>
 					<v-col cols=12>
-						<v-textarea row-height=20  auto-grow background-color="blue lighten-5" prepend-icon="mdi-format-align-left" v-model="desc" solo label="Product Description"></v-textarea>
+						<v-textarea row-height=25  auto-grow background-color="blue lighten-5" prepend-icon="mdi-format-align-left" v-model="desc" solo label="Product Description"></v-textarea>
 					</v-col>
 					<v-col cols=4>
 						<v-text-field background-color="blue lighten-5" type="number" prepend-icon="mdi-sack-percent" v-model="stock" solo label="Stock Count"></v-text-field>
@@ -29,8 +29,9 @@
 								</v-card-text>
 							</v-card>
 						</v-dialog>
+
 					</v-col>
-					<v-col cols=4>
+					<v-col cols=4  class=" d-flex">
 						<v-btn outlined tile @click="simages=!simages">Select Images</v-btn>
 					</v-col>
 				</v-row>
@@ -41,29 +42,22 @@
 				</v-row>
 			</v-form>
 			<!-- DIALOGS -->
-			<v-dialog v-model="simages" hide-overlay persistent width="700">
+			<v-dialog v-model="simages"  persistent width="1000">
 				<v-card>
 					<v-card-title>Select your Images</v-card-title>
 					<v-container>
-						<v-row wrap>
-							<v-col>
-								<v-img
-								height="200"
-								width="200"
-								src="https://cdn.vuetifyjs.com/images/cards/store.jpg"
+						<v-row  dense wrap>
+							<v-col v-for="image in allimages" :key="image._id" cols=3>
+								<v-img		
+								height="180"
+								width="250"
+								:src="image['mediaurl']"	
 								></v-img>
-								<v-checkbox label="Select Image" v-model="selectedimg" value="tt"></v-checkbox>
+								<v-checkbox label="Select Image" 
+								v-model="selectedimg" :value="image['mediaurl']">
+								</v-checkbox>
 							</v-col>
-
-							<v-col>
-								<v-img
-								height="200"
-								width="200"
-								src="https://cdn.vuetifyjs.com/images/cards/store.jpg"
-								></v-img>
-								<v-checkbox label="Select Image" v-model="selectedimg" value="tg"></v-checkbox>
-							</v-col>
-						</v-row>
+						</v-row>	
 					</v-container>
 					<v-card-actions>
 						<v-spacer></v-spacer>
@@ -78,8 +72,6 @@
 				Product Creation Failed, <strong>Product Name can't be duplicated and all fields are required</strong> 
 			</v-alert>
 		</v-dialog>
-
-
 	</v-container>
 </div>
 </template>
@@ -99,7 +91,12 @@
 				simages:true,
 				dialog:false,
 				error:false,
-				selectedimg:[]
+				selectedimg:[],
+			}
+		},
+		computed:{
+			allimages(){
+				return this.$store.getters["products/getimages"]
 			}
 		},
 		methods:{
@@ -107,7 +104,8 @@
 				this.dialog = true
 				let token = document.cookie.split(";")[0].split("=")[1]
 				this.$axios.setHeader('Authorization', 'Bearer '+token)
-				let data = await this.$axios.$post("https://salehandler52.herokuapp.com/product/addproduct",
+				let data = await this.$axios
+				.$post("https://salehandler52.herokuapp.com/product/addproduct",
 				{
 					"productname": this.productname,
 					"productprice": this.productprice,

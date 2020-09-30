@@ -71,7 +71,7 @@
 				{text:"Customer Name",value:"customer"},
 				{text:"Date",align: 'start',value:"date"},
 				{text:"Total Price",value:"totalprice"},
-				{text:"Show Invoic",value:"info"}
+				{text:"Show Invoice",value:"info"}
 				]
 			}
 		},

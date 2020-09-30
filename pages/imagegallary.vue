@@ -31,8 +31,9 @@
 				striped
 				></v-progress-linear>
 			</v-col>
-			<v-col v-for="(image,key) in allimages" :key="key" cols="3">
+			<v-col v-for="(image,key) in allimages" v-if="allimages.length >1" :key="key" cols="3">
 				<v-img lazy-src aspect-ratio="1.77" :src="image.mediaurl"></v-img>
+				<!-- <p>{{image}}</p> -->
 				<v-btn icon>
 					<v-icon color="blue">mdi-fullscreen</v-icon>
 				</v-btn>
@@ -45,7 +46,7 @@
 
 	<v-overlay :value="overlay">
 		<v-progress-circular indeterminate size="64"></v-progress-circular>
-	</v-overlay>
+	</v-overlay>	
 
 	<v-dialog v-model="dialog" hide-overlay persistent width="500">
 		<v-card dark>
@@ -67,20 +68,16 @@
 		</v-card>
 	</v-dialog>	
 
-	  <v-snackbar v-model="alert" multi-line top :timeout="timeout">
-    	{{alerttext}}
+	<v-snackbar v-model="alert" multi-line top :timeout="timeout">
+		{{alerttext}}
 
-      <template v-slot:action="{ attrs }">
-        <v-btn color="pink"  text v-bind="attrs" @click="alert = false">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
+		<template v-slot:action="{ attrs }">
+			<v-btn color="pink"  text v-bind="attrs" @click="alert = false">
+				Close
+			</v-btn>
+		</template>
+	</v-snackbar>
 
-<!-- 	<v-alert type="success" v-model="alert"  prominent border="left" dismissible
-	elevation="10" transition="scale-transition">
-	{{alerttext}}
-	</v-alert> -->
 
 </div>
 </template>
@@ -104,7 +101,6 @@
 				alert:false,
 				prompt:false,
 				productid:"",
-				allimages:[],
 				alerttext:"",
 				timeout:3000,
 				notifytext:["Image Upload Success","Image Deleted"],
@@ -115,6 +111,9 @@
 			}
 		},
 		computed: {
+			allimages(){
+				return this.$store.getters["products/getimages"]
+			}
 		},
 		methods:{
 			previewimage:function () {
@@ -145,23 +144,36 @@
 
 			},
 			uploadimage: async function(){
-				this.dialogtext = this.dialogs[0]
-				this.dialog = !this.dialog
+				try{
+					if(this.file.type.split("/")[0] =="image"){
+						this.dialogtext = this.dialogs[0]
+						this.dialog = !this.dialog
+						let token = document.cookie.split(";")[0].split("=")[1]
+						this.$axios.setHeader('Authorization', 'Bearer '+token)
+						let data = await this.$axios.$post("https://wiredapi.herokuapp.com/images/addimage",{
+							"imagedata":localStorage.getItem("image")
+						}
+						)
+						console.log(data)
+						if(data["status"] === "success"){
+							this.$store.commit("products/insertnewimg",data.data)
+							this.dialog = false
+							this.alerttext = this.notifytext[0]
+							this.alert = true
+							this.file = null
+						}
+					}
+					else{
+						throw new Error()
+					}
+					
+				}
+				catch{
+					console.log("Invalid File")
+					alert("Failed")
+				}
 				
-				let token = document.cookie.split(";")[0].split("=")[1]
-				this.$axios.setHeader('Authorization', 'Bearer '+token)
-				let data = await this.$axios.$post("https://wiredapi.herokuapp.com/images/addimage",{
-					"imagedata":localStorage.getItem("image")
-				}
-				)
-				console.log(data)
-				if(data["status"] === "success"){
-					this.dialog = false
-					this.alerttext = this.notifytext[0]
-					this.alert = false
-					this.alert = true
-					this.file = null
-				}
+
 			},
 			removeprompt: function(e){
 				this.prompt = !this.prompt
@@ -175,11 +187,13 @@
 				this.$axios.setHeader('Authorization', 'Bearer '+token)
 				let status = await this.$axios.$delete("https://wiredapi.herokuapp.com/images/delete/"+id)
 				if(status["status"] === "success"){
+					this.$store.commit("products/removeimg",id)
 					this.dialog = !this.dialog
 					console.log('done')
 					this.alerttext = this.notifytext[1]
 					this.alert = !this.alert
 					this.productid = ""
+
 
 				}
 				else{
@@ -189,15 +203,15 @@
 		},
 		components:{TopBar},
 
-		async mounted(){
-			let token = document.cookie.split(";")[0].split("=")[1]
-			this.$axios.setHeader('Authorization', 'Bearer '+token)
-			let allimages = await this.$axios.$get("https://wiredapi.herokuapp.com/images/storemedia")
-			console.log(allimages)
-			if(allimages["status"] == "success"){
-				this.allimages = allimages["data"]
-			}
-		}
+		// async mounted(){
+		// 	let token = document.cookie.split(";")[0].split("=")[1]
+		// 	this.$axios.setHeader('Authorization', 'Bearer '+token)
+		// 	let allimages = await this.$axios.$get("https://wiredapi.herokuapp.com/images/storemedia")
+		// 	console.log(allimages)
+		// 	if(allimages["status"] == "success"){
+		// 		this.allimages = allimages["data"]
+		// 	}
+		// }
 	}
 </script>
 

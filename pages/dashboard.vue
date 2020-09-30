@@ -3,8 +3,6 @@
 	<TopBar />
 	<DashCards/>
 </div>		
-</template>
-
 </div>
 
 </template>
@@ -19,6 +17,6 @@
 				
 			}
 		},
-		components:{TopBar,DashCards}
+		components:{TopBar,DashCards},
 	}
 </script>

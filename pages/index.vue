@@ -96,7 +96,8 @@
           this.$axios.setHeader('Authorization', 'Bearer '+result["token"])
           let data = await this.$axios.$get("https://wiredapi.herokuapp.com/product/store/")
           console.log(data)
-          this.$store.commit("products/addproduct",data['data'])
+          this.$store.commit("products/addproduct",data['products'])
+          this.$store.commit("products/addimage",data['allmedia'])
           this.$router.push('/dashboard')
         }
       }
