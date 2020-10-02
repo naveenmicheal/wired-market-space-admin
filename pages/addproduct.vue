@@ -22,57 +22,62 @@
 
 						<!-- Image Gallary -->
 						<v-dialog v-model="dialog" hide-overlay persistent width="500">
-							<v-card dark>
-								<v-card-text class="pa-6">
-									Choose Images
-									<v-progress-linear indeterminate color="white" class="mb-0 pa-1"></v-progress-linear>
-								</v-card-text>
-							</v-card>
-						</v-dialog>
+							<v-card color="primary" dark >
+							<v-card-text>
+								Please stand by
+								<v-progress-linear indeterminate color="white" class="mb-0">
+									
+								</v-progress-linear>
+							</v-card-text>
+						</v-card>
+					</v-dialog>
 
+				</v-col>
+				<v-col cols=4  class=" d-flex">
+					<v-btn outlined tile @click="simages=!simages">
+						<span v-if="selectedimg.length < 1">Select Image</span>
+						<span v-if="selectedimg.length >= 1">{{selectedimg.length}} images selected</span>
+					</v-btn>
+
+				</v-col>
+			</v-row>
+			<v-row>
+				<v-col cols=6>
+					<v-btn  tile outlined block class="black--text" @click="addproduct"><v-icon left>mdi-check</v-icon>Save</v-btn>
+				</v-col>	
+			</v-row>
+		</v-form>
+		<!-- DIALOGS -->
+		<v-dialog v-model="simages" persistent width="1000">
+			<v-card>
+				<v-card-title>Select your Images</v-card-title>
+				<v-container>
+					<v-row  dense wrap>
+						<v-col v-for="image in allimages" :key="image._id" cols=3>
+							<v-img		
+							height="180"
+							width="250"
+							:src="image['mediaurl']"	
+							></v-img>
+							<v-checkbox label="Select Image" 
+							v-model="selectedimg" :value="image['mediaurl']">
+						</v-checkbox>
 					</v-col>
-					<v-col cols=4  class=" d-flex">
-						<v-btn outlined tile @click="simages=!simages">Select Images</v-btn>
-					</v-col>
-				</v-row>
-				<v-row>
-					<v-col cols=6>
-						<v-btn  tile outlined block class="black--text" @click="addproduct"><v-icon left>mdi-check</v-icon>Save</v-btn>
-					</v-col>	
-				</v-row>
-			</v-form>
-			<!-- DIALOGS -->
-			<v-dialog v-model="simages"  persistent width="1000">
-				<v-card>
-					<v-card-title>Select your Images</v-card-title>
-					<v-container>
-						<v-row  dense wrap>
-							<v-col v-for="image in allimages" :key="image._id" cols=3>
-								<v-img		
-								height="180"
-								width="250"
-								:src="image['mediaurl']"	
-								></v-img>
-								<v-checkbox label="Select Image" 
-								v-model="selectedimg" :value="image['mediaurl']">
-								</v-checkbox>
-							</v-col>
-						</v-row>	
-					</v-container>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn text tile>Done</v-btn>
-						<v-btn text tile @click="simages = !simages">Discord</v-btn>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
-			<v-dialog hide-overlay persistent width="500"  v-model="error" >
-				<v-alert type="error"  prominent border="left" dismissible
-				elevation="10" transition="scale-transition"	>
-				Product Creation Failed, <strong>Product Name can't be duplicated and all fields are required</strong> 
-			</v-alert>
-		</v-dialog>
-	</v-container>
+				</v-row>	
+			</v-container>
+			<v-card-actions>
+				<v-spacer></v-spacer>
+				<v-btn text tile @click="simages = !simages">Done</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
+
+	<v-dialog width="500"  v-model="error" >
+		<v-card>
+			<v-card-title>Product Creation Failed</v-card-title>
+		</v-card>
+	</v-dialog>
+</v-container>
 </div>
 </template>
 
@@ -83,15 +88,16 @@
 		components:{TopBar},
 		data(){
 			return{
-				productname:'',
+				productname:'Product ',
 				productprice:'',
-				tax:'',
-				desc:'',
-				stock:'',
-				simages:true,
+				desc:'Product Description',
+				stock:0,
+				selectedimg:[],
+
+				simages:false,
 				dialog:false,
 				error:false,
-				selectedimg:[],
+
 			}
 		},
 		computed:{
@@ -105,13 +111,14 @@
 				let token = document.cookie.split(";")[0].split("=")[1]
 				this.$axios.setHeader('Authorization', 'Bearer '+token)
 				let data = await this.$axios
-				.$post("https://salehandler52.herokuapp.com/product/addproduct",
+				.$post("https://wiredapi.herokuapp.com/product/addproduct",
 				{
 					"productname": this.productname,
 					"productprice": this.productprice,
-					"tax":this.tax,
 					"description": this.desc,
-					"stock": this.stock
+					"tax":10,
+					"stock": this.stock,
+					"media":this.selectedimg
 				})
 				console.log(data)
 				if(data['status'] == "success"){

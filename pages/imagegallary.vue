@@ -1,4 +1,4 @@
-<template>
+	<template>
 	<div>
 		<TopBar/>
 		<v-container>
@@ -31,12 +31,17 @@
 				striped
 				></v-progress-linear>
 			</v-col>
-			<v-col v-for="(image,key) in allimages" v-if="allimages.length >1" :key="key" cols="3">
-				<v-img lazy-src aspect-ratio="1.77" :src="image.mediaurl"></v-img>
+			<v-col 
+			v-for="(image,key) in allimages" v-if="allimages.length >1" :key="key" cols="3">
+				<v-img style="border:2px solid black;" lazy-src aspect-ratio="1.77" :src="image.mediaurl"></v-img>
 				<!-- <p>{{image}}</p> -->
+
+				<a target="_blank" :href="image.mediaurl">
 				<v-btn icon>
 					<v-icon color="blue">mdi-fullscreen</v-icon>
 				</v-btn>
+				</a>
+				
 				<v-btn @click="removeprompt(image._id)" icon><v-icon color="red">mdi-delete</v-icon>
 				</v-btn>
 			</v-col>

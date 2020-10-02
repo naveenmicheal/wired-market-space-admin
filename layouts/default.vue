@@ -7,8 +7,7 @@
   </v-app> 
 </template>
 
-<script>
-	
+<script>	
 	import sidebar from "~/components/basics/sidebar"
   export default {
     data() {
@@ -28,6 +27,6 @@
     background-color: #EAEFF8
   }
   body {
-    min-width: 1024px !important;
+    /*min-width: 1024px !important;*/
 }
 </style>

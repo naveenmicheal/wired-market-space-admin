@@ -70,8 +70,8 @@
 				
 				{text:"Customer Name",value:"customer"},
 				{text:"Date",align: 'start',value:"date"},
+				{text:"Invoice Number",value:"info"},
 				{text:"Total Price",value:"totalprice"},
-				{text:"Show Invoice",value:"info"}
 				]
 			}
 		},
