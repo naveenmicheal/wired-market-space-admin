@@ -1,3 +1,4 @@
+	<!-- A Image Gallary has a compress and upload image actions -->
 	<template>
 	<div>
 		<TopBar/>
@@ -34,9 +35,7 @@
 			<v-col 
 			v-for="(image,key) in allimages" v-if="allimages.length >1" :key="key" cols="3">
 				<v-img style="border:2px solid black;" lazy-src aspect-ratio="1.77" :src="image.mediaurl"></v-img>
-				<!-- <p>{{image}}</p> -->
-
-				<a target="_blank" :href="image.mediaurl">
+			<a target="_blank" :href="image.mediaurl">
 				<v-btn icon>
 					<v-icon color="blue">mdi-fullscreen</v-icon>
 				</v-btn>

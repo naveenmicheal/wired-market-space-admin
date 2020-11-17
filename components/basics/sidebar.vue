@@ -30,7 +30,7 @@
 				{"name":"Dashboard","icon":"mdi-view-dashboard","path":"/dashboard"},
 				{"name":"Products","icon":"mdi-view-carousel","path":"/products"},
 				{"name":"Add Product","icon":"mdi-store","path":"/addproduct"},
-				{"name":"Image Gallary","icon":"mdi-swap-horizontal","path":"/imagegallary"},
+				{"name":"Orders","icon":"mdi-swap-horizontal","path":"/orders"},
 				{"name":"Transactions","icon":"mdi-tune-vertical","path":"/transactions"},
 				],
 			}

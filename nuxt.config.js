@@ -37,7 +37,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-   { src: '~/plugins/vuex-persist', ssr: false }
+   { src: '~/plugins/vuex-persist', ssr: false },
+   { src: '~/plugins/charts'},
   ],
   /*
   ** Auto import components
@@ -56,7 +57,11 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/markdownit'
   ],
+  markdownit: {
+    injected: true
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options

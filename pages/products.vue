@@ -14,6 +14,12 @@
 
 			}
 		},
-		components:{ProductCards,TopBar}
+		components:{ProductCards,TopBar},
+		computed:{
+			products(){
+				return this.$store.getters["products/getproducts"]
+
+			}
+		}
 	}
 </script>

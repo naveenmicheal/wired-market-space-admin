@@ -9,9 +9,13 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@editorjs/editorjs": "^2.18.0",
     "@nuxtjs/axios": "^5.12.0",
+    "@nuxtjs/markdownit": "^1.2.10",
     "browser-image-compression": "^1.0.12",
+    "chart.js": "^2.9.3",
     "nuxt": "^2.14.0",
+    "vue-chartjs": "^3.5.1",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {

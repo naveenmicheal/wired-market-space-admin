@@ -69,7 +69,7 @@
     name:"loginpage",
   	data(){
   		return{
-  			username:"john@mail.com",
+  			username:"wired@mail.com",
   			password:"",
         loading:false,
         snackbar:false,

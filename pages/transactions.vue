@@ -3,51 +3,95 @@
 		<TopBar/>
 		<v-container>
 			<v-row>
-				<v-col cols=9>
-					<v-card>
-						<v-card-title>
-							All Transactions
-							<v-spacer></v-spacer>
-							<v-text-field
-							v-model="search"
-							append-icon="mdi-magnify"
-							label="Search"
-							single-line
-							hide-details
-							></v-text-field>
-						</v-card-title>
-						<v-data-table
-						:headers="headers"
-						:items="items"		
-						item-key="Date"
-						:search="search"
-						:loading="loading"
-						class="elevation-1"
-						>
-						<v-chip color="red"></v-chip>
-					</v-data-table>
-				</v-card>
-			</v-col>
-			<v-col>
-				<h1 class="text-center">View</h1>
-				<v-text-field v-model="invoicenumber" solo placeholder="Transaction Number..."></v-text-field>
-				<v-btn block tile outlined @click="openinvoice">Get Invoice</v-btn>
+				<v-col id="filter" cols="8" justify="center" align="center">
+					
+					<v-btn-toggle tile dense color="deep-purple accent-3" group>
+						<v-btn text disabled tile>Filter By:</v-btn>
+						<v-btn dense>
+							Last 7 Days
+						</v-btn>
+
+						<v-btn dense>
+							Last 30 Days
+						</v-btn>
+						<v-btn dense>
+							All Time
+						</v-btn>
+						<v-select				 
+          			:items="['New','Acknowledged','Packed','Shipped','Delivered']"
+         			 label="Filter By"
+         			 solo 
+       	  			 hide-details
+       	  			 dense
+        			></v-select>
+					</v-btn-toggle>
+				</v-col>
+				<v-col cols="4">
+					<v-btn tile >Advanced Search Section</v-btn>
+				</v-col>
+				
+				
+			</v-row>
+			<v-row>
+				<v-col cols="12">
+					<v-expansion-panels  multiple popout focusable tile hover>
+						<v-expansion-panel class="elevation-7 pa-2 mb-2" v-for="c in 5" :key="c">
+							<v-expansion-panel-header>
+								<p><strong>Invoice ID:</strong> IJGH75JG85747</p>
+								<p><strong>Date: </strong>28 Feb 2020</p>
+								<p><strong>Total Amount: </strong>6478rs</p>
+								<p><strong>Status:</strong>Ordered</p>
+							</v-expansion-panel-header>
+							<v-expansion-panel-content>
+								<v-row>
+									<v-col cols="6">
+										<h3>Customer: </h3>
+										<p><strong>Name:</strong> Example Customer Name</p>
+										<p><strong>Email:</strong>testmail@mailserver.com</p>
+										<p><strong>Phone:</strong>9987654321</p>
+									</v-col>
+									<v-col cols="6">
+										<h3>Delivery to</h3>
+										<p><strong>Name:</strong> Example Customer Name</p>
+										<p><strong>Email:</strong>testmail@mailserver.com</p>
+										<p><strong>Phone:</strong>9987654321</p>
+									</v-col>
+								</v-row>
+								<v-row>
+									<v-col cols="8">
+										<v-data-table
+										:headers="headers"
+										:items="items"
+										class="elevation-6"
+										dense
+										:items-per-page="1000"
+										hide-default-footer
+										></v-data-table>
+									</v-col>
+									<v-col cols="4">
+										<h3 class="text-align">STATUS</h3>
+										<v-select
+										:items="status"
+										label="Standard"
+
+										solo>
+									</v-select>
+									<v-btn  tile  block class="white--text" color="blue">Update</v-btn>
+								</v-col>
+							</v-row>
+							<v-row>
+								<v-col cols="12">
+									<v-btn outlined tile color="green">Print</v-btn>
+									<v-btn outlined tile color="red">Delete</v-btn>
+								</v-col>
+
+							</v-row>
+
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+				</v-expansion-panels>
 			</v-col>
 		</v-row>
-		<!-- INVOICE DIALOG -->
-		<v-dialog v-model="invoiceprompt" persistent max-width="700">
-			<v-card>
-				<v-card-title class="headline">Invoice Number</v-card-title>
-				<v-card-text class="d-inline">Customer Name: </v-card-text>
-				<v-card-text class="d-inline" >Customer Name: </v-card-text>
-				<v-card-text class="d-inline" >Customer Name: </v-card-text>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn color="black darken-4" text tile outlined @click="invoiceprompt = false">Close</v-btn>
-					<v-btn color="blue darken-1" text tile outlined @click="">Print</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
 	</v-container>
 </div>
 </template>
@@ -58,34 +102,63 @@
 		data(){
 			return{
 				Hello : "World",
-				items :[],
-				expanded: [],
-				singleExpand: true,
-				search: '',
-				loading:true,
-
-				invoicenumber:'',
-				invoiceprompt:false,
-				headers:[
-				
-				{text:"Customer Name",value:"customer"},
-				{text:"Date",align: 'start',value:"date"},
-				{text:"Invoice Number",value:"info"},
-				{text:"Total Price",value:"totalprice"},
+				status:["Acknowledged","Packed","Shipped","Delivered"],
+				headers: [,
+				{text:"Product Id",value:'productid'},
+				{text:"Product Name",value:'productname'},
+				{text:"Price",value:'productprice'},
+				{text:"Quantity",value:'quantity'},
+				{text:"Total Price",value:'totalprice'}
+				],
+				items:[
+				{	
+					productid:"HY06GEHI",
+					productname:"Test Product A",
+					productprice:737,
+					quantity:1,
+					totalprice:737
+				},
+				{
+					productid:"HY06GEHI",
+					productname:"Test Product B",
+					productprice:837,
+					quantity:1,
+					totalprice:837
+				},
+				{
+					productid:"HY06GEHI",
+					productname:"Test Product C",
+					productprice:100,
+					quantity:2,
+					totalprice:200
+				}
 				]
 			}
 		},
 		components:{TopBar},
 		methods:{
-			openinvoice(){
-				this.invoiceprompt = true
-			},
-			getinvoice(e){
-				console.log(e)
-			}
+			
 		},
 		async mounted(){
-		
+
 		},
 	}
 </script>
+
+<style lang="css" scoped>
+.v-expansion-panel-header:before{
+	background-color: green
+}
+.v-application p{
+	margin-bottom: 0;
+}
+.v-data-table{
+	border-radius: 0
+}
+thead.v-data-table-header {
+	background: gainsboro;
+}
+#filter{
+	overflow-x: auto;
+}
+</style>
