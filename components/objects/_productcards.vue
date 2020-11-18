@@ -116,7 +116,7 @@
 		},
 		methods:{
 			removeproduct: async function (e) {
-				this.dialog = true
+					this.dialog = true
 				console.log(e)
 				let token = document.cookie.split(";")[0].split("=")[1]
 				this.$axios.setHeader('Authorization', 'Bearer '+token)

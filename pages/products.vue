@@ -1,20 +1,21 @@
 <template>
 	<div>
 		<TopBar/>
-		<ProductCards/>
+		<Products class="px-2"/>
 	</div>
 </template>
 
 <script type="text/javascript">
 	import TopBar from "~/components/basics/topbar"
-	import ProductCards from "~/components/objects/productcards"
+	// import ProductCards from "~/components/objects/productcards"
+	import Products from "~/components/objects/product"
 	export default{
 		data(){
 			return{
 
 			}
 		},
-		components:{ProductCards,TopBar},
+		components:{Products,TopBar},
 		computed:{
 			products(){
 				return this.$store.getters["products/getproducts"]
