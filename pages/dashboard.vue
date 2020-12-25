@@ -16,12 +16,13 @@
   <v-col wrap cols=12 md=4 v-for="item in products" :key="item._id" class="pa-6">
           <v-item-group>
             <v-card class="elevation-7 pa-3" tile>
-              <v-img  class="mx-auto primage" lazy-src aspect-ratio="1.77"
-              :src="item['media'][0]">
+              <v-img  class="mx-auto primage" contain lazy-src aspect-ratio="1.77"
+              :src="item['media'][0].url">
             </v-img>
-            <v-card-title style="height: 90px;  overflow-y: auto;" class="d-flex justify-center pt-1">
+            <v-card-title style="height: 80px;  overflow-y: auto;" class="d-flex justify-center pt-1">
               {{item.productname}}
             </v-card-title> 
+            <p class="text-h5 text-center">{{item.productprice}} ₹</p>
           </v-card>
         </v-item-group>
       </v-col>

@@ -95,9 +95,11 @@
           document.cookie = "token="+result["token"]
           this.$axios.setHeader('Authorization', 'Bearer '+result["token"])
           let data = await this.$axios.$get("https://wiredapi.herokuapp.com/product/store/")
-          console.log(data)
+          // console.log(data)
+          // let categories = await this.$axios.$get("https://wiredapi.herokuapp.com/category/getall")
+          // console.log(categories)
           this.$store.commit("products/addproduct",data['products'])
-          this.$store.commit("products/addimage",data['allmedia'])
+          // this.$store.commit("products/addcategories",categories.data)
           this.$router.push('/dashboard')
         }
       }

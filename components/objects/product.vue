@@ -1,7 +1,7 @@
 <template>
-	<div class="px-3 mx-3 ">
+	<div class="px-3 mx-3 " >
 		<!-- {{products[0].productname}} -->
-		<v-row v-for="product in products" :key="product._id" class="product my-2">
+		<v-row v-for="product in products" :key="product._id" style="border-radius: 5px" class="product my-2">
 			<v-col md="2">
 				<v-img contain aspect-ratio="1.5" :src="product.media[0].url"></v-img>
 			</v-col>
@@ -60,7 +60,7 @@
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn dark text  @click="viewproduct = false" >
-              Ok
+              Close
             </v-btn>
           </v-toolbar-items>
         </v-toolbar>
@@ -70,31 +70,31 @@
 			<v-form>
 				<v-row>
 					<v-col md="9">
-						<v-text-field disabled maxlength ="60" counter="60" background-color="blue lighten-5" prepend-icon="mdi-note" v-model="viewproduct.productname" outlined label="Product Name"></v-text-field>
+						<v-text-field readonly maxlength ="60" counter="60" background-color="blue lighten-5" prepend-icon="mdi-note" v-model="viewproduct.productname" outlined label="Product Name"></v-text-field>
 					</v-col>
 					<v-col md="3">
-						<v-text-field disabled  background-color="blue lighten-5" type="number" prepend-icon="mdi-cash-multiple" v-model="viewproduct.productprice" outlined label="Product Price"></v-text-field>
+						<v-text-field readonly  background-color="blue lighten-5" type="number" prepend-icon="mdi-cash-multiple" v-model="viewproduct.productprice" outlined label="Product Price"></v-text-field>
 					</v-col>
 
 				</v-row>
 				<v-row>
 					<v-col md=2>
-						<v-text-field disabled  background-color="blue lighten-5" type="number" prepend-icon="mdi-sack-percent" v-model="viewproduct.stock" outlined label="Stock Count"></v-text-field>
+						<v-text-field readonly  background-color="blue lighten-5" type="number" prepend-icon="mdi-sack-percent" v-model="viewproduct.stock" outlined label="Stock Count"></v-text-field>
 					</v-col>
 					<v-col md=3>
-						<v-autocomplete disabled  solo background-color="blue lighten-5" prepend-icon="mdi-group" outlined label="Category" :items="categoryitems" v-model="viewproduct.category[0]" @input="categorychange">
+						<v-autocomplete  readonly solo background-color="blue lighten-5" prepend-icon="mdi-group" outlined label="Category" :items="categoryitems" v-model="viewproduct.category[0]" @input="categorychange">
 							
 						</v-autocomplete>
 					</v-col>
 					<v-col md=7>
-						<v-text-field  disabled v-model="viewproduct.shortintro" maxlength = "100" counter="100" background-color="blue lighten-5" prepend-icon="mdi-tag" outlined label="One Line Description"></v-text-field>
+						<v-text-field readonly  v-model="viewproduct.shortintro" maxlength = "100" counter="100" background-color="blue lighten-5" prepend-icon="mdi-tag" outlined label="One Line Description"></v-text-field>
 					</v-col>
 				</v-row>
 
 				<v-row>
 					<v-col md=12>
 
-						<v-textarea disabled  counter row-height=25 tag="textarea"  auto-grow background-color="blue lighten-5" prepend-icon="mdi-format-align-left" v-model="viewproduct.description" outlined label="Product Description"></v-textarea>
+						<v-textarea readonly  counter row-height=25 tag="textarea"  auto-grow background-color="blue lighten-5" prepend-icon="mdi-format-align-left" v-model="viewproduct.description" outlined label="Product Description"></v-textarea>
 
 						<!-- <div v-html="$md.render(desc)"></div> -->
 					</v-col>

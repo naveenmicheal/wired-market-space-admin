@@ -6,7 +6,7 @@
 			<v-form>
 				<v-row>
 					<v-col cols="9">
-						<v-text-field maxlength = "60" counter="60" background-color="blue lighten-5" prepend-icon="mdi-note" v-model="productname" outlined label="Product Name"></v-text-field>
+						<v-text-field maxlength = "60" counter="60" background-color="blue lighten-5" prepend-icon="mdi-note" v-model="productname" outlined label="Product Name"></v-text-field>	
 					</v-col>
 					<v-col cols="3">
 						<v-text-field background-color="blue lighten-5" type="number" prepend-icon="mdi-cash-multiple" v-model="productprice" outlined label="Product Price"></v-text-field>
@@ -18,7 +18,7 @@
 						<v-text-field background-color="blue lighten-5" type="number" prepend-icon="mdi-sack-percent" v-model="stock" outlined label="Stock Count"></v-text-field>
 					</v-col>
 					<v-col cols=3>
-						<v-autocomplete solo background-color="blue lighten-5" prepend-icon="mdi-group" outlined label="Category" :items="categoryitems" v-model="category" @input="categorychange">
+						<v-autocomplete solo background-color="blue lighten-5" prepend-icon="mdi-dns" outlined label="Category" :items="categoryitems" v-model="category" @input="categorychange">
 							
 						</v-autocomplete>
 					</v-col>
@@ -160,7 +160,7 @@
 					"shortintro": this.shortintro,
 					"description": this.description,
 					"stock": this.stock,
-					"media":this.images
+					"media":this.images,
 				})
 				console.log(data)
 				if(data['status'] == "success"){
