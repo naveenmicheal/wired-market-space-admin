@@ -6,7 +6,7 @@
 							Wired Market Space
 						</v-toolbar-title>
 						<v-spacer></v-spacer>
-						<v-btn-toggle tile dense color="deep-purple accent-3" group>
+						<!-- <v-btn-toggle tile dense color="deep-purple accent-3" group>
 						<v-btn dense>
 							Last 1 Day
 						</v-btn>
@@ -21,37 +21,45 @@
 						<v-btn dense>
 							All Time
 						</v-btn>
-					</v-btn-toggle>
+					</v-btn-toggle> -->
 				</v-toolbar>
 		<v-row>
-			<v-col v-for="(card,key) in carddata" :key=key cols=4>
-				<v-card :color="card.color" class="elevation-15 pa-4" tile dark >
+			<v-col cols=4>
+				<!-- <v-card :color="card.color" class="elevation-15 pa-4" tile dark >
 
 					<h2 class="text-center" >{{card.cardname}}</h2>
 					<h3 class="text-center">{{card.count}}<v-icon right large>{{card.icon}}</v-icon></h3>
 					<v-icon large right>mdi-finance</v-icon>
 
+				</v-card> -->
+				<v-card color="pink darken-3" class="elevation-15 pa-4" tile dark >
+
+					<h2 class="text-center" >Total Orders</h2>
+					<h3 class="text-center">{{this.totalorders}}<v-icon right large>mdi-briefcase-check</v-icon></h3>
+					<v-icon large right>mdi-finance</v-icon>
+
+				</v-card>
+			</v-col>
+
+			<v-col cols=4>
+				<v-card color="light-blue darken-4" class="elevation-15 pa-4" tile dark >
+
+					<h2 class="text-center" >Total Income</h2>
+					<h3 class="text-center">{{this.totalprice}} ₹</h3>
+					<v-icon large right>mdi-finance</v-icon>
+
+				</v-card>
+			</v-col>
+			<v-col cols=4>
+				<v-card color="blue-grey darken-4" class="elevation-15 pa-4" tile dark >
+
+					<h2 class="text-center" >Total Products</h2>
+					<h3 class="text-center">{{this.totalproducts}}<v-icon right large>mdi-tag-multiple</v-icon></h3>
+					<v-icon large right>mdi-finance</v-icon>
+
 				</v-card>
 			</v-col>
 		</v-row>
-<!-- 			<v-row>
-				<h1 class="px-6">Trends </h1>
-				<v-col cols=12>
-					<v-sparkline
-					
-					:value="value"
-					:labels = "labels"
-					:padding="padding"
-					:line-width="width"
-					:stroke-linecap="lineCap"
-				
-					:fill="fill"
-					:type="type"
-					:auto-line-width="autoLineWidth"
-					auto-draw
-					></v-sparkline>
-				</v-col>
-			</v-row> -->
 		</v-container>
 	</div>
 </template>
@@ -60,6 +68,7 @@
 	export default{
 		data(){
 			return{
+
 				width: 1,
 				radius: 10,
 				padding: 2,
@@ -71,27 +80,61 @@
 				fill: false,
 				type: 'trend',
 				autoLineWidth: false,
-				carddata:[
-				{
-					cardname:"Total Orders",
-					icon:"mdi-briefcase-check",
-					count:134,
-					color:"pink darken-3"
-				},
-				{
-					cardname:"Total Income",
-					icon:"	",
-					count:"134$",
-					color:"light-blue darken-4"
-				},
-				{
-					cardname:"Total Products",
-					icon:"mdi-tag-multiple",
-					count:"16",
-					color:"blue-grey darken-4"
-				},
-				],
+				// carddata:[
+				// {
+				// 	cardname:"Total Orders",
+				// 	icon:"mdi-briefcase-check",
+				// 	count:this.totalorders,
+				// 	color:"pink darken-3"
+				// },
+				// {
+				// 	cardname:"Total Income",
+				// 	icon:"",
+				// 	count:this.totalprice,
+				// 	color:"light-blue darken-4"
+				// },
+				// {
+				// 	cardname:"Total Products",
+				// 	icon:"mdi-tag-multiple",
+				// 	count:this.$store.getters["products/getproducts"].length,
+				// 	color:"blue-grey darken-4"
+				// },
+				// ],
 			}
+		},
+		computed:{
+			totalprice(){
+				return this.$store.getters["products/getprice"]
+			},
+			totalorders(){
+				return this.$store.getters["products/getorders"]
+			},
+			totalproducts(){
+				return this.$store.getters["products/getproducts"].length
+			}
+		},
+		methods:{
+			fetchorders(){
+				let token = document.cookie.split(";")[0].split("=")[1]
+				this.$axios.setHeader('Authorization', 'Bearer '+token)
+				this.$axios.$get("https://wiredapi.herokuapp.com/orders/getsucess").then(data=>{
+					console.log(data)
+					this.$store.commit("products/totalorders",data.data.length)
+					let totalprice = 0
+					data.data.forEach(data =>{
+						totalprice += parseInt(data.totalprice) 
+					})
+					console.log("#: ",totalprice)
+					this.$store.commit("products/totalprice",totalprice)
+
+				}).catch(err=>{
+					console.log(err)
+				})
+			},
+		},
+		mounted(){
+			this.fetchorders()
+			
 		}
 	}
 </script>

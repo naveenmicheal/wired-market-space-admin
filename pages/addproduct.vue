@@ -14,15 +14,15 @@
 
 				</v-row>
 				<v-row>
-					<v-col cols=2>
+					<!-- <v-col cols=2>
 						<v-text-field background-color="blue lighten-5" type="number" prepend-icon="mdi-sack-percent" v-model="stock" outlined label="Stock Count"></v-text-field>
 					</v-col>
 					<v-col cols=3>
 						<v-autocomplete solo background-color="blue lighten-5" prepend-icon="mdi-dns" outlined label="Category" :items="categoryitems" v-model="category" @input="categorychange">
 							
 						</v-autocomplete>
-					</v-col>
-					<v-col cols=7>
+					</v-col> -->
+					<v-col cols=12>
 						<v-text-field v-model="shortintro" maxlength = "100" counter="100" background-color="blue lighten-5" prepend-icon="mdi-tag" outlined label="One Line Description"></v-text-field>
 					</v-col>
 				</v-row>
@@ -53,11 +53,11 @@
 						<v-card class="pa-3">
 							<v-img contain aspect-ratio="1.5"
 							:src="img"></v-img>
-							<v-card-actions>
+							<!-- <v-card-actions>
 								<v-btn outlined>View</v-btn>
 								<v-spacer></v-spacer>
 								<v-btn @click="removeimg(img)" outlined>Delete</v-btn>
-							</v-card-actions>
+							</v-card-actions> -->
 						</v-card>	
 					</v-col>
 				</v-row>
@@ -126,7 +126,7 @@
 				shortintro : "This is a Single Line Intro",	
 				description:'This is a Long Description about the product',
 				stock:1,
-				category:'Two',
+				category:'One',
 				images:[],
 
 				categoryitems: ['One', 'Two', 'Three'],
@@ -138,8 +138,6 @@
 				imagepreview: false,
 				parsedimg:'',
 				productonup: false,
-
-				rules: [v => v.length <= 25 || 'Max 25 characters'],
 			}
 		},
 		computed:{
@@ -147,7 +145,8 @@
 		},
 		methods:{
 			addproduct: async function () {
-				this.dialog = true
+				if(this.productname && this.productprice && this.images.length >=1){
+					this.dialog = true
 				this.productonup = !this.productonup
 				let token = document.cookie.split(";")[0].split("=")[1]
 				this.$axios.setHeader('Authorization', 'Bearer '+token)
@@ -176,6 +175,11 @@
 					this.dialog = false
 					this.error = true
 				}
+				}
+				else{
+					alert("All Fields and Minimum one Image is required")
+				}
+				
 			},
 			categorychange: function(){
 				return ;

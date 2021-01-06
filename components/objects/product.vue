@@ -1,7 +1,6 @@
 <template>
-	<div class="px-3 mx-3 " >
-		<!-- {{products[0].productname}} -->
-		<v-row v-for="product in products" :key="product._id" style="border-radius: 5px" class="product my-2">
+	<div class="px-6 mx-6 " >
+		<v-row v-for="product in products" :key="product._id" style="border-radius: 5px" class="product my-4">
 			<v-col md="2">
 				<v-img contain aspect-ratio="1.5" :src="product.media[0].url"></v-img>
 			</v-col>

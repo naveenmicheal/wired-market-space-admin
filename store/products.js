@@ -1,12 +1,20 @@
 export const state = () => ({
 	products :[],
-	categories:[]
+	categories:[],
+	totalorders:'',
+	totalprice:'',
 })
 
 export const mutations={
 	addproduct(state,data){
 		console.log('Add product Executed')
 		state.products = data
+	},
+	totalorders(state,data){
+		state.totalorders = data
+	},
+	totalprice(state,data){
+		state.totalprice = data
 	},
 
 	insertnew(state,item){
@@ -36,5 +44,11 @@ export const getters = {
 	},
 	getcategory : state =>{
 		return state.categories
+	},
+	getorders : state =>{
+		return state.totalorders 
+	},
+	getprice : state =>{
+		return state.totalprice
 	}
 }
