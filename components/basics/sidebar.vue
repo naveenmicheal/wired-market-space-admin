@@ -32,6 +32,7 @@
 				{"name":"Add Product","icon":"mdi-store","path":"/addproduct"},
 				// {"name":"Collections","icon":"mdi-dns","path":"/collection"},
 				{"name":"Orders","icon":"mdi-swap-horizontal","path":"/orders"},
+				{"name":"Videos","icon":"mdi-dns","path":"/videos"},
 				],
 			}
 		}
